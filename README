@@ -1,0 +1,10 @@
+# WiFi Access Point script
+
+## Setup
+
+1. Create new VM for access point (Ubuntu 22.04 has good support for WiFi-hardware)
+2. Add one network interface for management (e.g. NAT with host)
+3. Add one network interface for access point traffic (e.g. VLAN10)
+4. Add wireless hardware to VM and check that it appears in `dmesg`
+5. Run `setup.sh`
+6. Connect to the new AP and you should see the traffic

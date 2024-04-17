@@ -199,8 +199,8 @@ else
 fi
 
 # Restart hostapd service
-if ! systemctl restart hostapd; then
-    echo "Error: Failed to restart hostapd"
+if ! systemctl reload hostapd; then
+    echo "Error: Failed to reload hostapd"
     exit 1
 fi
 
