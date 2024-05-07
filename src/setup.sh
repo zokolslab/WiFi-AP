@@ -21,7 +21,7 @@ IP="10.0.0.1"
 DHCP_RANGE="10.0.0.10,10.0.0.250,12h"
 NAMESERVER="8.8.8.8"
 SSID="red"
-PASSWORD="ajomies-elojuhla"
+PASSWORD="red12345"
 COUNTRY="FI"
 CHANNEL="1"
 
@@ -173,10 +173,15 @@ if ! systemctl restart NetworkManager; then
     exit 1
 fi
 
+# Setup hostapd (if config exists, delete it and redo)
+if test -f /etc/hostapd/hostapd.conf; then
+	rm /etc/hostapd/hostapd.conf
+fi
+
 touch /etc/hostapd/hostapd.conf
 cat <<EOT >> /etc/hostapd/hostapd.conf
 interface=$selected_ap_interface
-crtl_interface=/var/run/hostap
+ctrl_interface=/var/run/hostap
 ctrl_interface_group=0
 auth_algs=1
 wpa_key_mgmt=WPA-PSK
