@@ -152,12 +152,12 @@ if ! systemctl restart NetworkManager; then
 fi
 
 # Setup dnsmasq (if config exists, delete it and redo)
-if test -f /etc/dnsmasq.d/wifi_ap.conf; then
-	rm /etc/dnsmasq.d/wifi_ap.conf
+if test -f /etc/NetworkManager/dnsmasq.d/wifi_ap.conf; then
+	rm /etc/NetworkManager/dnsmasq.d/wifi_ap.conf
 fi
 
-touch /etc/dnsmasq.d/wifi_ap.conf
-cat <<EOT >> /etc/dnsmasq.d/wifi_ap.conf
+touch /etc/NetworkManager/dnsmasq.d/wifi_ap.conf
+cat <<EOT >> /etc/NetworkManager/dnsmasq.d/wifi_ap.conf
 interface=wl*
 dhcp-range=$DHCP_RANGE
 dhcp-option=3,$IP
