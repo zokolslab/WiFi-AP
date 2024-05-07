@@ -170,7 +170,7 @@ EOT
 # Restart NetworkManager service
 if ! systemctl restart NetworkManager; then
     echo "Error: Failed to restart Network Manager"
-    exit 1
+    #exit 1
 fi
 
 # Setup hostapd (if config exists, delete it and redo)
@@ -216,20 +216,20 @@ else
 	# Unmask hostapd service
 	if ! systemctl unmask hostapd; then
 	    echo "Error: Failed to unmask hostapd"
-	    exit 1
+	    #exit 1
 	fi
 
 	# Enable hostapd service
 	if ! systemctl enable hostapd; then
 	    echo "Error: Failed to enable hostapd"
-	    exit 1
+	    #exit 1
 	fi
 fi
 
 # Restart hostapd service
 if ! systemctl restart hostapd; then
     echo "Error: Failed to restart hostapd"
-    exit 1
+    #exit 1
 fi
 
 dialog --clear --msgbox "hostapd configured for interface $selected_ap_interface, SSID $SSID, password $PASSWORD, country $COUNTRY, and channel $CHANNEL" 0 0
