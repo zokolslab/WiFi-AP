@@ -173,13 +173,36 @@ if ! systemctl restart NetworkManager; then
     exit 1
 fi
 
-cp /usr/share/doc/hostapd/examples/hostapd.conf /etc/hostapd/hostapd.conf
+touch /etc/hostapd/hostapd.conf
+cat <<EOT >> /etc/hostapd/hostapd.conf
+interface=$selected_ap_interface
+crtl_interface=/var/run/hostap
+ctrl_interface_group=0
+auth_algs=1
+wpa_key_mgmt=WPA-PSK
+beacon_int=100
+ssid=$SSID
+channel=$CHANNEL
+hw_mode=g
+ieee80211n=0
+wpa_passphrase=$PASSWORD
+wpa=2
+wpa_pairwise=CCMP
+country_code=FI
+ignore_broadcast_ssid=0
+EOT
+
+#cp /usr/share/doc/hostapd/examples/hostapd.conf /etc/hostapd/hostapd.conf
 # Update the hostapd configuration file with the interface name, SSID, password, country, and channel
-sed -i "s/^interface=.*/interface=$selected_ap_interface/" /etc/hostapd/hostapd.conf
-sed -i "s/^ssid=.*/ssid=$SSID/" /etc/hostapd/hostapd.conf
-sed -i "s/^wpa_passphrase=.*/wpa_passphrase=$PASSWORD/" /etc/hostapd/hostapd.conf
-sed -i "s/^country_code=.*/country_code=$COUNTRY/" /etc/hostapd/hostapd.conf
-sed -i "s/^channel=.*/channel=$CHANNEL/" /etc/hostapd/hostapd.conf
+#sed -i "s/^interface=.*/interface=$selected_ap_interface/" /etc/hostapd/hostapd.conf
+#sed -i "s/^ssid=.*/ssid=$SSID/" /etc/hostapd/hostapd.conf
+#sed -i "s/^wpa_passphrase=.*/wpa_passphrase=$PASSWORD/" /etc/hostapd/hostapd.conf
+#sed -i "s/^country_code=.*/country_code=$COUNTRY/" /etc/hostapd/hostapd.conf
+#sed -i "s/^channel=.*/channel=$CHANNEL/" /etc/hostapd/hostapd.conf
+#sed -i "s/^wpa_key_mgmt=.*/wpa_key_mgmt=WPA-PSK/" /etc/hostapd/hostapd.conf
+#sed -i "s/^wpa_pairwise=.*/wpa_pairwise=CCMP/" /etc/hostapd/hostapd.conf
+#sed -i "s/^rsn_pairwise=.*/rsn_pairwise=CCMP/" /etc/hostapd/hostapd.conf
+#sed -i "s/^wpa=.*/wpa=2/" /etc/hostapd/hostapd.conf
 
 # Check if hostapd service is unmasked
 if [[ $(systemctl is-enabled hostapd) == "enabled" ]]; then
@@ -199,8 +222,8 @@ else
 fi
 
 # Restart hostapd service
-if ! systemctl reload hostapd; then
-    echo "Error: Failed to reload hostapd"
+if ! systemctl restart hostapd; then
+    echo "Error: Failed to restart hostapd"
     exit 1
 fi
 
