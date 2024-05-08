@@ -40,4 +40,9 @@ if ! systemctl restart NetworkManager; then
     #exit 1
 fi
 
+iptables --flush
+iptables --table nat --flush
+iptables --delete-chain
+iptables --table nat --delete-chain
+
 exit 0
